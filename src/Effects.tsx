@@ -2,20 +2,19 @@ import { subscribe, unsubscribe } from './resources/API';
 import { useState, useEffect } from 'react';
 
 export function Effects(props: { sourceId: string }) {
-    const [message, newmessageset] = useState(-1);
+    const [last_msg, last_msg_set] = useState(-1);
 
     useEffect(() => {
-        const a = (newMessage: number) => newmessageset(newMessage);
+        const a = (newMessage: number) => last_msg_set(newMessage);
         subscribe(props.sourceId, a);
         return () => {
             unsubscribe(props.sourceId, a);
-            newmessageset(-1);
+            last_msg_set(-1);
         };
     }, [props.sourceId]);
     return (
         <div>
-            {' '}
-            {props.sourceId}: {message}{' '}
+            {props.sourceId}: {last_msg}
         </div>
     );
 }
